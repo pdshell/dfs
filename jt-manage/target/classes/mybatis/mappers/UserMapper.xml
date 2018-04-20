@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jt.manage.mapper.UserMapper">
+	<!--
+		说明:
+		1.namespace是映射文件的唯一标识 不允许重复
+		2.在配置时应该和mybatis的客户端(Mapper接口文件)路径保持一致
+		3.映射文件中的Id,应该和接口方法名称一一对应
+	 -->
+	
+	<!--根据分类ID查询分类名称  -->
+	<select id="findAll" resultType="User">
+		select * from user
+	</select>
+</mapper>

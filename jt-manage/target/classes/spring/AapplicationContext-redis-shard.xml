@@ -1,0 +1,81 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	
+	<!--通过线程池的方式整合单台redis  -->
+	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<!--定义连接的总数  -->
+		<property name="maxTotal" value="${redis.maxTotal}"/>
+		<!--定义最大的空闲数量  -->
+		<property name="maxIdle" value="${redis.maxIdle}"/>
+		
+		<!--定义最小空闲数量  -->
+		<property name="minIdle" value="${redis.minIdle}"></property>
+	</bean>
+	
+	<!--
+		List<JedisShardInfo> shards = new ArrayList<JedisShardInfo>();
+		shards.add(new JedisShardInfo("192.168.126.142",6379));
+		shards.add(new JedisShardInfo("192.168.126.142",6380));
+		shards.add(new JedisShardInfo("192.168.126.142",6381));
+		ShardedJedisPool jedisPool = 
+				new ShardedJedisPool(poolConfig, shards);
+	  -->
+	  
+	  <!--定义jediShardinfo对象  -->
+	  <bean id="host1" class="redis.clients.jedis.JedisShardInfo">
+	  	<constructor-arg index="0" value="${redis.host1}" type="java.lang.String"/>
+	  	<constructor-arg index="1" value="${redis.port1}" type="int"/>
+	  </bean>
+	  
+	  <bean id="host2" class="redis.clients.jedis.JedisShardInfo">
+	  	<constructor-arg index="0" value="${redis.host2}" type="java.lang.String"/>
+	  	<constructor-arg index="1" value="${redis.port2}" type="int"/>
+	  </bean>
+	  
+	   <bean id="host3" class="redis.clients.jedis.JedisShardInfo">
+	  	<constructor-arg index="0" value="${redis.host3}" type="java.lang.String"/>
+	  	<constructor-arg index="1" value="${redis.port3}" type="int"/>
+	  </bean>
+	  
+	<bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool">
+		<constructor-arg index="0" ref="poolConfig" />
+		<constructor-arg index="1">
+			<list>
+				<ref bean="host1"/>
+				<ref bean="host2"/>
+				<ref bean="host3"/>
+			</list>
+		</constructor-arg>
+	</bean>
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</beans>

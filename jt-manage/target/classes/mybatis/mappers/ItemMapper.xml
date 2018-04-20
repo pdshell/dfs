@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jt.manage.mapper.ItemMapper">
+	
+	<!--说明:所有的sql语句必须小写.否则Linux操作时,不能识别表  -->
+	<select id="findItemAll" resultType="Item">
+		select * from tb_item order by updated desc
+	</select>
+	
+	<!--查询记录总数  -->
+	<select id="findItemCount" resultType="int">
+		select count(*) from tb_item
+	</select>
+	
+	<!--实现分页的查询  -->
+	<select id="findItemByPage" resultType="Item">
+		select * from tb_item order by updated desc limit #{begin},#{rows}
+	</select>
+	
+	<!-- //java.lang.String/long/int -->
+	<!--根据商品分类id查询名称  -->
+	<select id="findItemCatName" resultType="string">
+		select name from tb_item_cat where id = #{itemCatId}
+	</select>
+	
+	
+	<!--测试的动态更新 
+		set作用:
+			1.动态更新时使用
+			2.能够去除where条件之前的多余的1个逗号
+	 -->
+	<update id="updateUser">
+		update tb_user  set name = #{name} age=#{age} where id = #{id}
+		<set>
+			<if test="name !=null">name = #{name},</if>
+			<if test="age  !=null">age = #{age},</if> 
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+	<!--批量修改状态 
+		collection 的取值有如下的几种
+		1.如果传递的数据是数组              array
+		2.如果传递的数据是List集合      list
+		3.如果传递的数据是Map	    map中的key
+	 -->
+	<update id="updateStatus">
+		update tb_item set status = #{status} where id in(
+			<foreach collection="ids" item="id" separator=",">
+				#{id}
+			</foreach>
+		)
+	</update>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>
